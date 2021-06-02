@@ -8,6 +8,39 @@ const Button = ({ handleClick, text }) => {
   )
 }
 
+
+const Statistics = ({ good, bad, neutral }) => {
+
+  const total = () => good + bad + neutral
+
+  const average = () => {
+    const reVal = (good - bad) / total()
+    if (isNaN(reVal))
+      return 0
+    return reVal
+  }
+
+  const positive = () => {
+    const retVal = good / total() * 100
+    if (isNaN(retVal))
+      return 0
+    return retVal
+  }
+
+  return (
+    <>
+      <h2>statistics</h2>
+      <p>good {good}</p>
+      <p>neutral {neutral}</p>
+      <p>bad {bad}</p>
+      <p>all {total()}</p>
+      <p>average {average()}</p>
+      <p>positive {positive()}%</p>
+    </>
+  )
+}
+
+
 const App = () => {
 
   const [good, setGood] = useState(0)
@@ -26,11 +59,6 @@ const App = () => {
     setBad(bad + 1)
   }
 
-  const total = () => good + bad + neutral
-
-  const average = () => (good - bad) / total()
-
-  const positive = () => (good) / total() * 100
 
   return (
     <div >
@@ -38,13 +66,7 @@ const App = () => {
       <Button handleClick={goodHandler} text='good' />
       <Button handleClick={neutralHandler} text='neutral' />
       <Button handleClick={badHandler} text='bad' />
-      <h2>statistics</h2>
-      <p>good {good}</p>
-      <p>neutral {neutral}</p>
-      <p>bad {bad}</p>
-      <p>all {total()}</p>
-      <p>average {average()}</p>
-      <p>positive {positive()}%</p>
+      <Statistics good={good} bad={bad} neutral={neutral} />
     </div>
   );
 }
