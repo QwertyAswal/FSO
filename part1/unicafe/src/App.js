@@ -11,21 +11,19 @@ const Button = ({ handleClick, text }) => {
 
 const Statistics = ({ good, bad, neutral }) => {
 
-  const total = () => good + bad + neutral
+  const total = good + bad + neutral
 
-  const average = () => {
-    const reVal = (good - bad) / total()
-    if (isNaN(reVal))
-      return 0
-    return reVal
-  }
+  const average = (good - bad) / total
 
-  const positive = () => {
-    const retVal = good / total() * 100
-    if (isNaN(retVal))
-      return 0
-    return retVal
-  }
+  const positive = good / total * 100
+
+  if (total === 0)
+    return (
+      <>
+        <h2>statistics</h2>
+        <p>No feedback given</p>
+      </>
+    )
 
   return (
     <>
@@ -33,9 +31,9 @@ const Statistics = ({ good, bad, neutral }) => {
       <p>good {good}</p>
       <p>neutral {neutral}</p>
       <p>bad {bad}</p>
-      <p>all {total()}</p>
-      <p>average {average()}</p>
-      <p>positive {positive()}%</p>
+      <p>all {total}</p>
+      <p>average {average}</p>
+      <p>positive {positive}%</p>
     </>
   )
 }
