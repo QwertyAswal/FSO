@@ -2,9 +2,10 @@ import React, { useState } from 'react'
 
 const App = () => {
   const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', id: 1 }
+    { name: 'Arto Hellas', number: '12345678', id: 1 }
   ])
   const [newName, setNewName] = useState('')
+  const [newNumber, setNewNumber] = useState('')
 
   const addPerson = (event) => {
     event.preventDefault()
@@ -14,30 +15,36 @@ const App = () => {
     else {
       const personObject = {
         name: newName,
+        number: newNumber,
         id: persons.length + 1
       }
       setPersons(persons.concat(personObject))
     }
     setNewName('')
+    setNewNumber('')
   }
 
-  const handleChange = event => setNewName(event.target.value)
+  const handleNameChange = event => setNewName(event.target.value)
+  const handleNumberChange = event => setNewNumber(event.target.value)
 
-  const generateNames = persons.map(person => <p key={person.id}>{person.name}</p>)
+  const generateContacts = persons.map(person => <p key={person.id}>{person.name} {person.number}</p>)
 
   return (
     <div>
       <h2>Phonebook</h2>
       <form onSubmit={addPerson}>
         <div>
-          name: <input value={newName} onChange={handleChange} placeholder='a new name...' />
+          name: <input value={newName} onChange={handleNameChange} placeholder='a new name...' />
+        </div>
+        <div>
+          number: <input value={newNumber} onChange={handleNumberChange} placeholder='a new number...' />
         </div>
         <div>
           <button type="submit">add</button>
         </div>
       </form>
       <h2>Numbers</h2>
-      {generateNames}
+      {generateContacts}
     </div>
   )
 }
