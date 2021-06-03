@@ -57,6 +57,8 @@ const generateId = () => {
 app.post('/api/persons', (req, res) => {
     const body = req.body
     if (body.name && body.number) {
+        if (persons.find(p => p.name === body.name))
+            return res.status(400).json({ error: 'name must be unique' })
         const person = {
             name: body.name,
             number: body.number,
@@ -65,7 +67,7 @@ app.post('/api/persons', (req, res) => {
         persons = persons.concat(person)
         return res.status(201).json(person)
     }
-    return res.status(400).end()
+    return res.status(400).json({ error: 'name and number required' })
 })
 
 
