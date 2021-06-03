@@ -22,17 +22,30 @@ const App = () => {
   const addPerson = (event) => {
     event.preventDefault()
     const copyPerson = persons.find(person => person.name === newName)
-    if (copyPerson)
-      alert(`${newName} is already added to phonebook`)
-    else {
-      const personObject = {
-        name: newName,
-        number: newNumber
+    const personObject = {
+      name: newName,
+      number: newNumber
+    }
+    if (copyPerson) {
+      if (personObject.number === copyPerson.number)
+        alert(`${newName} is already added to phonebook`)
+      else {
+        const toChange = window.confirm(`${copyPerson.name} already added to phonebook, replace old number with new one?`)
+        if (toChange) {
+          personObject.id = copyPerson.id
+          phonebookService
+            .update(personObject.id, personObject)
+            .then(data => {
+              setPersons(persons.map(p => p.id === data.id ? data : p))
+            })
+        }
       }
+    }
+    else {
       phonebookService
         .create(personObject)
         .then(data => {
-          setPersons(persons.concat(personObject))
+          setPersons(persons.concat(data))
         })
     }
 
@@ -43,9 +56,18 @@ const App = () => {
   const handleNameChange = event => setNewName(event.target.value)
   const handleNumberChange = event => setNewNumber(event.target.value)
   const handleFilterChange = event => setFilterText(event.target.value)
+  const personsToShow = () => persons.filter(person => person.name.toLowerCase().startsWith(filterText.toLowerCase()))
 
-  const personsToShow = () => {
-    return persons.filter(person => person.name.toLowerCase().startsWith(filterText.toLowerCase()))
+  const deleteHandler = (person) => {
+    const toDelete = window.confirm(`Delete ${person.name}?`)
+    if (toDelete)
+      phonebookService
+        .remove(person.id)
+        .then(data => {
+          setPersons(persons.filter(p => {
+            return p.id !== person.id
+          }))
+        })
   }
 
   return (
@@ -58,7 +80,7 @@ const App = () => {
         handleNumberChange={handleNumberChange} newNumber={newNumber}
       />
       <h2>Numbers</h2>
-      <Numbers personsToShow={personsToShow()} />
+      {personsToShow().map(person => <Numbers key={person.id} person={person} deleteHandler={() => deleteHandler(person)} />)}
     </div>
   )
 }
