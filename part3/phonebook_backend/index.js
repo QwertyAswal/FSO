@@ -18,30 +18,15 @@ app.get('/info', (req, res) => {
     res.send(data)
 })
 
-app.get('/api/persons', (req, res) => {
+app.get('/api/persons', (req, res, next) => {
     Person.find({}).then(persons => {
         res.json(persons)
     }).catch(err => {
-        res.status(404).json({ err })
+        next(err)
     })
 })
 
-app.get('/api/persons/:id', (req, res) => {
-    Person.findById(req.params.id).then(person => {
-        res.json(person)
-    }).catch(err => {
-        res.status(404).json({ err })
-    })
-})
-
-app.delete('/api/persons/:id', (req, res) => {
-    const id = Number(req.params.id)
-    persons = persons.filter(person => person.id !== id)
-    res.status(204).end()
-})
-
-
-app.post('/api/persons', (req, res) => {
+app.post('/api/persons', (req, res, next) => {
     const body = req.body
     const person = new Person({
         name: body.name,
@@ -50,10 +35,45 @@ app.post('/api/persons', (req, res) => {
     person.save().then(savedPerson => {
         res.status(201).json(savedPerson)
     }).catch(err => {
-        res.status(400).json({ err })
+        next(err)
     })
 })
 
+app.get('/api/persons/:id', (req, res, next) => {
+    Person.findById(req.params.id).then(person => {
+        if (person)
+            res.json(person)
+        else
+            res.status(404).end()
+    }).catch(err => {
+        next(err)
+    })
+})
+
+app.delete('/api/persons/:id', (req, res, next) => {
+    Person.findByIdAndRemove(req.params.id).then(result => {
+        res.status(204).end()
+    }).catch(err => {
+        next(err)
+    })
+})
+
+app.put('/api/persons/:id', (req, res, next) => {
+    const body = req.body
+    if (!body.name || !body.number)
+        return res.status(401).json({ err: 'name and number required' })
+    const person = {
+        name: body.name,
+        number: body.number
+    }
+    Person.findByIdAndUpdate(req.params.id, person).then(updated => {
+        res.json(person)
+    }).catch(err => next(err))
+})
+
+const errorHandler = (err, req, res, next) => {
+    res.status(400).json({ err })
+}
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
