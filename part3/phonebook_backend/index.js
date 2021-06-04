@@ -72,8 +72,11 @@ app.put('/api/persons/:id', (req, res, next) => {
 })
 
 const errorHandler = (err, req, res, next) => {
+    console.log(err)
     res.status(400).json({ err })
 }
+
+app.use(errorHandler)
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
