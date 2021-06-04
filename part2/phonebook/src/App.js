@@ -39,8 +39,10 @@ const App = () => {
             .update(personObject.id, personObject)
             .then(data => {
               setPersons(persons.map(p => p.id === personObject.id ? personObject : p))
+              setMsg(`${personObject.name} update`)
+            }).catch(err => {
+              setMsg(`${err}`)
             })
-          setMsg(`${personObject.name} update`)
           setTimeout(() => {
             setMsg(null)
           }, 5000)
@@ -52,8 +54,10 @@ const App = () => {
         .create(personObject)
         .then(data => {
           setPersons(persons.concat(data))
+          setMsg(`Added ${personObject.name}`)
+        }).catch(err => {
+          setMsg(`${err}`)
         })
-      setMsg(`Added ${personObject.name}`)
       setTimeout(() => {
         setMsg(null)
       }, 5000)
