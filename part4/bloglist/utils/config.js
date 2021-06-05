@@ -5,7 +5,7 @@ const MONGODB_URI = process.env.MONGODB_URI
 const SECRET = process.env.SECRET ? process.env.SECRET : 'hello world'
 
 module.exports = {
-    PORT,
-    MONGODB_URI,
-    SECRET
+	PORT,
+	MONGODB_URI,
+	SECRET
 }
