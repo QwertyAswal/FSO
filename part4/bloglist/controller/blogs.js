@@ -1,11 +1,12 @@
 const blogsRouter = require('express').Router()
 const middleware = require('../utils/middleware')
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
-blogsRouter.get('/', async (req, res, next) => {
+blogsRouter.get('/', middleware.userExtractor, async (req, res, next) => {
     try {
-        const blogs = await Blog.find({}).populate('user', { username: 1, id: 1, name: 1 })
-        res.json(blogs)
+        const user = await User.findById(req.user.id).populate('blogs', { title: 1, author: 1 })
+        res.json(user.blogs)
     }
     catch (error) {
         next(error)
