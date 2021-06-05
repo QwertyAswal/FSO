@@ -6,7 +6,8 @@
     "scripts": {
         "start": "node index.js",
         "dev": "nodemon index.js",
-        "test": "jest --verbose"
+        "test": "jest --verbose",
+        "lint": "eslint"
     },
     "keywords": [],
     "author": "",
@@ -19,6 +20,7 @@
         "mongoose": "^5.12.12"
     },
     "devDependencies": {
+        "eslint": "^7.28.0",
         "jest": "^27.0.4",
         "morgan": "^1.10.0",
         "nodemon": "^2.0.7"
