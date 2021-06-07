@@ -19,7 +19,7 @@ const asObject = (anecdote) => {
 
 const initialState = anecdotesAtStart.map(asObject)
 
-const reducer = (state = initialState, action) => {
+const anecdoteReducer = (state = initialState, action) => {
     const compare = (a, b) => {
         if (a.votes < b.votes) {
             return 1;
@@ -37,7 +37,7 @@ const reducer = (state = initialState, action) => {
                 votes: reqAnecdote.votes + 1
             }
             return state.map(s => s.id === action.data.id ? returnAnecdote : s).sort(compare)
-        case 'NEW_NOTE':
+        case 'NEW_ANECDOTE':
             return [...state, action.data].sort(compare)
         default:
             return state.sort(compare)
@@ -46,7 +46,7 @@ const reducer = (state = initialState, action) => {
 
 export const createAnecdote = (content) => {
     const anecdote = {
-        type: 'NEW_NOTE',
+        type: 'NEW_ANECDOTE',
         data: {
             content,
             id: getId(),
@@ -66,4 +66,4 @@ export const createVote = (id) => {
     return action
 }
 
-export default reducer
+export default anecdoteReducer
