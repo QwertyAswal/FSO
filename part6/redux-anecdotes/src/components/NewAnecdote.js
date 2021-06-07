@@ -1,6 +1,7 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { createAnecdote } from '../reducers/anecdoteReducer'
+import { createNotification } from '../reducers/notificationReducer'
 
 
 const NewAnecdote = () => {
@@ -11,6 +12,8 @@ const NewAnecdote = () => {
         event.preventDefault()
         const content = event.target.anecdote.value
         event.target.anecdote.value = ''
+        dispatch(createNotification(`You created - '${content}'`))
+
         dispatch(createAnecdote(content))
     }
 
