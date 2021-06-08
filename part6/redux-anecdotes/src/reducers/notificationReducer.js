@@ -1,10 +1,14 @@
+let timoutId
+
 export const createNotification = (msg, time = 5) => {
     return async dispatch => {
         dispatch({
             type: 'NEW_NOTIFICATION',
             msg
         })
-        setTimeout(() => {
+        if (timoutId)
+            clearTimeout(timoutId)
+        timoutId = setTimeout(() => {
             dispatch({
                 type: 'NEW_NOTIFICATION',
                 msg: ''
