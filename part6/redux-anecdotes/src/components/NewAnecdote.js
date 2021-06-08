@@ -11,6 +11,7 @@ const NewAnecdote = () => {
         event.preventDefault()
         const content = event.target.anecdote.value
         event.target.anecdote.value = ''
+        
         dispatch(createAnecdote(content))
         dispatch(createNotification(`You created - '${content}'`))
 
