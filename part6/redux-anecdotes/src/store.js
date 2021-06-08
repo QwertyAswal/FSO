@@ -13,12 +13,12 @@ const store = createStore(combined, composeWithDevTools(
     applyMiddleware(thunk)
 ))
 
-store.subscribe(() => {
-    if (store.getState().notification !== '') {
-        setTimeout(() => {
-            store.dispatch(createNotification(''))
-        }, 5000)
-    }
-})
+// store.subscribe(() => {
+//     if (store.getState().notification !== '') {
+//         setTimeout(() => {
+//             store.dispatch(createNotification(''))
+//         }, 5000)
+//     }
+// })
 
 export default store
